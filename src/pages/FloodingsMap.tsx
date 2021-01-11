@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
 import MapView, { Marker, Callout, PROVIDER_GOOGLE } from "react-native-maps";
 import { Feather } from "@expo/vector-icons";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import * as Location from "expo-location";
+import {
+    useFocusEffect,
+    useNavigation,
+    useRoute,
+} from "@react-navigation/native";
 import { RectButton } from "react-native-gesture-handler";
 import mapMarker from "../images/map-marker.png";
 import api from "../services/api";
@@ -14,15 +19,41 @@ interface FloodingsItem {
     longitude: number;
 }
 
+interface FloodingsPropsRoute {
+    coords?: {
+        latitude?: number;
+        longitude?: number;
+    };
+}
+
 const FloodingsMap: React.FC = () => {
     const navigation = useNavigation();
+    const routes = useRoute();
+    const { coords } = routes.params as FloodingsPropsRoute;
 
     const [Floodings, setFloodings] = useState<FloodingsItem[]>([]);
+    const [location, setLocation] = useState({
+        latitude: 0,
+        longitude: 0,
+    });
+
     useFocusEffect(() => {
         api.get("/floodings").then(({ data }) => {
             setFloodings(data);
         });
     });
+
+    useEffect(() => {
+        if (!coords?.latitude || !coords?.longitude) {
+            (async () => {
+                const { coords } = await Location.getCurrentPositionAsync({
+                    accuracy: Location.Accuracy.High,
+                });
+                setLocation(coords);
+            })();
+        }
+        return;
+    }, []);
 
     const handleNavigationToFloodingsDetails = (id: number) => {
         navigation.navigate("FloodingsDetails", { id });
@@ -33,46 +64,49 @@ const FloodingsMap: React.FC = () => {
     };
     return (
         <View style={styles.container}>
-            <MapView
-                provider={PROVIDER_GOOGLE}
-                style={styles.map}
-                initialRegion={{
-                    latitude: -23.5077632,
-                    longitude: -46.2979072,
-                    latitudeDelta: 0.008,
-                    longitudeDelta: 0.008,
-                }}
-            >
-                {Floodings.map((Floodings) => (
-                    <Marker
-                        key={Floodings.id}
-                        icon={mapMarker}
-                        calloutAnchor={{
-                            x: 2.7,
-                            y: 0.9,
-                        }}
-                        coordinate={{
-                            latitude: Floodings.latitude,
-                            longitude: Floodings.longitude,
-                        }}
-                    >
-                        <Callout
-                            tooltip
-                            onPress={() => {
-                                handleNavigationToFloodingsDetails(
-                                    Floodings.id,
-                                );
+            {(coords?.latitude || location.latitude !== 0) && (
+                <MapView
+                    provider={PROVIDER_GOOGLE}
+                    style={styles.map}
+                    initialRegion={{
+                        latitude: coords?.latitude ?? location.latitude,
+                        longitude: coords?.longitude ?? location.longitude,
+                        latitudeDelta: 0.008,
+                        longitudeDelta: 0.008,
+                    }}
+                    loadingEnabled
+                >
+                    {Floodings.map((Floodings) => (
+                        <Marker
+                            key={Floodings.id}
+                            icon={mapMarker}
+                            calloutAnchor={{
+                                x: 2.7,
+                                y: 0.9,
+                            }}
+                            coordinate={{
+                                latitude: Floodings.latitude,
+                                longitude: Floodings.longitude,
                             }}
                         >
-                            <View style={styles.calloutContainer}>
-                                <Text style={styles.calloutText}>
-                                    {Floodings.name}
-                                </Text>
-                            </View>
-                        </Callout>
-                    </Marker>
-                ))}
-            </MapView>
+                            <Callout
+                                tooltip
+                                onPress={() => {
+                                    handleNavigationToFloodingsDetails(
+                                        Floodings.id,
+                                    );
+                                }}
+                            >
+                                <View style={styles.calloutContainer}>
+                                    <Text style={styles.calloutText}>
+                                        {Floodings.name}
+                                    </Text>
+                                </View>
+                            </Callout>
+                        </Marker>
+                    ))}
+                </MapView>
+            )}
 
             <View style={styles.footer}>
                 <Text style={styles.footerText}>

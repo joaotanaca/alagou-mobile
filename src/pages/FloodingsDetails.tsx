@@ -63,20 +63,6 @@ export default function FloodingsDetails() {
  
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.imagesContainer}>
-        <ScrollView horizontal pagingEnabled>
-          {Floodings.images.map((image) => {
-            return (
-              <Image 
-                key={image.id}
-                style={styles.image} 
-                source={{ uri: image.url }} 
-              />
-            );
-          })}
-        </ScrollView>
-      </View>
-
       <View style={styles.detailsContainer}>
         <Text style={styles.title}>{Floodings.name}</Text>
         <Text style={styles.description}>{Floodings.about}</Text>

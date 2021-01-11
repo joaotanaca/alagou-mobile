@@ -20,7 +20,7 @@ const Header = ({ title, showCancel = true }: HeaderProps) => {
     return (
         <View style={styles.container}>
             <BorderlessButton onPress={navigation.goBack}>
-                <Feather name="arrow-left" size={24} color="#15b6d6" />
+                <Feather name="arrow-left" size={24} color="#29b6f6" />
             </BorderlessButton>
 
             <Text style={styles.title}>{title}</Text>
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
 
     title: {
         fontFamily: "Nunito_600SemiBold",
-        color: "#8fa7b3",
+        color: "#4b636e",
         fontSize: 16,
     },
 });

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as Location from "expo-location";
@@ -15,6 +15,15 @@ import FloodingsData from "./pages/CreateFloodings/FloodingsData";
 const { Navigator, Screen } = createStackNavigator();
 
 const Routes: React.FC = () => {
+    const [permission, setPermission] = useState(false);
+    useEffect(() => {
+        (async () => {
+            const { gpsAvailable } = await Location.getProviderStatusAsync();
+            const { status } = await Location.getPermissionsAsync();
+
+            setPermission(!gpsAvailable || status !== "granted");
+        })();
+    }, []);
     return (
         <NavigationContainer>
             <Navigator
@@ -23,21 +32,14 @@ const Routes: React.FC = () => {
                     cardStyle: { backgroundColor: "#f2f3f5" },
                 }}
             >
-                <Screen name="GetLocation" component={GetLocation} />
+                {!permission && (
+                    <Screen name="GetLocation" component={GetLocation} />
+                )}
                 <Screen
-                    name="SearchLocation"
-                    component={SearchLocation}
-                    options={{
-                        headerShown: true,
-                        header: () => (
-                            <Header
-                                showCancel={false}
-                                title="Pesquise uma região"
-                            />
-                        ),
-                    }}
+                    name="FloodingsMap"
+                    component={FloodingsMap}
+                    initialParams={{ coords: {} }}
                 />
-                <Screen name="FloodingsMap" component={FloodingsMap} />
                 <Screen
                     name="FloodingsDetails"
                     component={FloodingsDetails}
@@ -51,7 +53,19 @@ const Routes: React.FC = () => {
                         ),
                     }}
                 />
-
+                <Screen
+                    name="SearchLocation"
+                    component={SearchLocation}
+                    options={{
+                        headerShown: true,
+                        header: () => (
+                            <Header
+                                showCancel={false}
+                                title="Pesquise uma região"
+                            />
+                        ),
+                    }}
+                />
                 <Screen
                     name="SelectMapPosition"
                     component={SelectMapPosition}

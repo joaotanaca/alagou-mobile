@@ -9,7 +9,7 @@ const LocationUser: React.FC = () => {
     const requestLocation = async () => {
         const { status } = await Location.requestPermissionsAsync();
         const { gpsAvailable } = await Location.getProviderStatusAsync();
-        if (status !== "granted" || gpsAvailable) {
+        if (status !== "granted" || !gpsAvailable) {
             return;
         }
         const { coords } = await Location.getCurrentPositionAsync({
@@ -37,7 +37,7 @@ const LocationUser: React.FC = () => {
                 <Button
                     icon="map-marker-multiple"
                     mode="contained"
-                    color="#000"
+                    color="#29b6f6"
                     contentStyle={buttonStyles.container}
                     labelStyle={buttonStyles.label}
                     onPress={requestLocation}
@@ -48,7 +48,7 @@ const LocationUser: React.FC = () => {
                 <Button
                     icon="map-search-outline"
                     mode="contained"
-                    color="#000"
+                    color="#29b6f6"
                     contentStyle={buttonStyles.container}
                     labelStyle={buttonStyles.label}
                     onPress={handleNavigateToSearchLocation}
@@ -87,6 +87,7 @@ const buttonStyles = StyleSheet.create({
     label: {
         fontFamily: "Nunito_700Bold",
         fontSize: 18,
+        color:"#FFf"
     },
 });
 
