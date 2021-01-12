@@ -52,6 +52,7 @@ const LocationUser: React.FC = () => {
                 {loading ? (
                     <ActivityIndicator
                         animating={true}
+                        size="large"
                         color={Colors.blue500}
                     />
                 ) : (

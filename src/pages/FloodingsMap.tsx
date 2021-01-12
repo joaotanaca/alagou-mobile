@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, Dimensions } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import MapView, { Marker, Callout, PROVIDER_GOOGLE } from "react-native-maps";
-import { Feather } from "@expo/vector-icons";
 import * as Location from "expo-location";
 import {
     useFocusEffect,
     useNavigation,
     useRoute,
 } from "@react-navigation/native";
-import { RectButton } from "react-native-gesture-handler";
-import mapMarker from "../images/map-marker.png";
+import mapMarker from "../images/map-marker-a.png";
 import api from "../services/api";
 import { FAB } from "react-native-paper";
 
