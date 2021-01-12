@@ -11,6 +11,7 @@ import {
 import { RectButton } from "react-native-gesture-handler";
 import mapMarker from "../images/map-marker.png";
 import api from "../services/api";
+import { FAB } from "react-native-paper";
 
 interface FloodingsItem {
     id: number;
@@ -113,12 +114,12 @@ const FloodingsMap: React.FC = () => {
                     {Floodings.length} Alagamentos encontrados
                 </Text>
 
-                <RectButton
+                <FAB
                     style={styles.createFloodingsButton}
                     onPress={handleToCreateFloodings}
-                >
-                    <Feather name="plus" size={20} color="#fff" />
-                </RectButton>
+                    icon="plus"
+                    color="#FFF"
+                />
             </View>
         </View>
     );
@@ -128,12 +129,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-
     map: {
-        width: Dimensions.get("window").width,
-        height: Dimensions.get("screen").height,
+        flex: 1,
     },
-
     calloutContainer: {
         width: 160,
         height: 46,
@@ -144,7 +142,7 @@ const styles = StyleSheet.create({
     },
 
     calloutText: {
-        color: "#0089a5",
+        color: "#0086c3",
         fontSize: 14,
         fontFamily: "Nunito_700Bold",
     },
@@ -169,15 +167,14 @@ const styles = StyleSheet.create({
 
     footerText: {
         fontFamily: "Nunito_700Bold",
-        color: "#8fa7b3",
+        color: "#0086c3",
     },
 
     createFloodingsButton: {
         width: 56,
         height: 56,
-        backgroundColor: "#15c3d6",
+        backgroundColor: "#29b6f6",
         borderRadius: 20,
-
         justifyContent: "center",
         alignItems: "center",
     },

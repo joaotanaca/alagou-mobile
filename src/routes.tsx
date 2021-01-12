@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as Location from "expo-location";
+import * as Permissions from "expo-permissions";
 
 import Header from "./components/Header";
 
@@ -15,15 +16,6 @@ import FloodingsData from "./pages/CreateFloodings/FloodingsData";
 const { Navigator, Screen } = createStackNavigator();
 
 const Routes: React.FC = () => {
-    const [permission, setPermission] = useState(false);
-    useEffect(() => {
-        (async () => {
-            const { gpsAvailable } = await Location.getProviderStatusAsync();
-            const { status } = await Location.getPermissionsAsync();
-
-            setPermission(!gpsAvailable || status !== "granted");
-        })();
-    }, []);
     return (
         <NavigationContainer>
             <Navigator
@@ -32,9 +24,7 @@ const Routes: React.FC = () => {
                     cardStyle: { backgroundColor: "#f2f3f5" },
                 }}
             >
-                {!permission && (
-                    <Screen name="GetLocation" component={GetLocation} />
-                )}
+                <Screen name="GetLocation" component={GetLocation} />
                 <Screen
                     name="FloodingsMap"
                     component={FloodingsMap}
