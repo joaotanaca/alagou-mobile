@@ -23,12 +23,14 @@ const User: React.FC = () => {
                 <TextInput
                     label="Email"
                     keyboardType="email-address"
+                    autoCapitalize="none"
                     left={<TextInput.Icon name="email" color="#0086c3" />}
                     style={styles.input}
                     theme={theme}
                 />
                 <TextInput
                     label="Senha"
+                    secureTextEntry={true}
                     left={<TextInput.Icon name="lock" color="#0086c3" />}
                     style={styles.input}
                     theme={theme}
