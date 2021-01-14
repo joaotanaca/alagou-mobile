@@ -12,6 +12,7 @@ import SelectMapPosition from "./pages/CreateFloodings/SelectMapPosition";
 import FloodingsData from "./pages/CreateFloodings/FloodingsData";
 import Login from "./pages/User/Login";
 import Signup from "./pages/User/Signup";
+import route_strings from "./utils/strings/routes";
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -24,15 +25,26 @@ const Routes: React.FC = () => {
                     cardStyle: { backgroundColor: "#f2f3f5" },
                 }}
             >
-                <Screen name="Login" component={Login} />
-                <Screen name="GetLocation" component={GetLocation} />
+                <Screen name={route_strings.login} component={Login} />
                 <Screen
-                    name="FloodingsMap"
+                    name={route_strings.signup}
+                    component={Signup}
+                    options={{
+                        headerShown: true,
+                        header: () => <Header showCancel={false} />,
+                    }}
+                />
+                <Screen
+                    name={route_strings.getLocation}
+                    component={GetLocation}
+                />
+                <Screen
+                    name={route_strings.floodingsMap}
                     component={FloodingsMap}
                     initialParams={{ coords: {} }}
                 />
                 <Screen
-                    name="FloodingsDetails"
+                    name={route_strings.floodingsDetails}
                     component={FloodingsDetails}
                     options={{
                         headerShown: true,
@@ -45,7 +57,7 @@ const Routes: React.FC = () => {
                     }}
                 />
                 <Screen
-                    name="SearchLocation"
+                    name={route_strings.searchLocation}
                     component={SearchLocation}
                     options={{
                         headerShown: true,
@@ -58,7 +70,7 @@ const Routes: React.FC = () => {
                     }}
                 />
                 <Screen
-                    name="SelectMapPosition"
+                    name={route_strings.selectMapPosition}
                     component={SelectMapPosition}
                     options={{
                         headerShown: true,
@@ -67,7 +79,7 @@ const Routes: React.FC = () => {
                 />
 
                 <Screen
-                    name="FloodingsData"
+                    name={route_strings.floodingsData}
                     component={FloodingsData}
                     options={{
                         headerShown: true,

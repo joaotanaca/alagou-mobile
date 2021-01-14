@@ -1,11 +1,13 @@
 import React from "react";
+import { useNavigation } from "@react-navigation/native";
 import { View, Text, StyleSheet } from "react-native";
 import { Avatar, Button, TextInput } from "react-native-paper";
-import {} from "react-native-paper";
+import route_strings from "../../utils/strings/routes";
 
 // import { Container } from './styles';
 
 const User: React.FC = () => {
+    const navigate = useNavigation();
     const theme = {
         colors: {
             primary: "#0086c3",
@@ -51,7 +53,7 @@ const User: React.FC = () => {
                     compact
                     uppercase={false}
                     labelStyle={redirectSignup.label}
-                    onPress={() => console.log("press")}
+                    onPress={() => navigate.navigate(route_strings.signup)}
                     theme={theme}
                 >
                     crie uma conta agora
