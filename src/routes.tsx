@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import * as Location from "expo-location";
-import * as Permissions from "expo-permissions";
 
 import Header from "./components/Header";
 
-import GetLocation from "./pages/LocationUser/GetLocation";
-import SearchLocation from "./pages/LocationUser/SearchLocation";
 import FloodingsMap from "./pages/FloodingsMap";
 import FloodingsDetails from "./pages/FloodingsDetails";
+import GetLocation from "./pages/LocationUser/GetLocation";
+import SearchLocation from "./pages/LocationUser/SearchLocation";
 import SelectMapPosition from "./pages/CreateFloodings/SelectMapPosition";
 import FloodingsData from "./pages/CreateFloodings/FloodingsData";
+import Login from "./pages/User/Login";
+import Signup from "./pages/User/Signup";
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -24,6 +24,7 @@ const Routes: React.FC = () => {
                     cardStyle: { backgroundColor: "#f2f3f5" },
                 }}
             >
+                <Screen name="Login" component={Login} />
                 <Screen name="GetLocation" component={GetLocation} />
                 <Screen
                     name="FloodingsMap"
