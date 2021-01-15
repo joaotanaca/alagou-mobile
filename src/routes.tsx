@@ -25,15 +25,6 @@ const Routes: React.FC = () => {
                     cardStyle: { backgroundColor: "#f2f3f5" },
                 }}
             >
-                <Screen name={route_strings.login} component={Login} />
-                <Screen
-                    name={route_strings.signup}
-                    component={Signup}
-                    options={{
-                        headerShown: true,
-                        header: () => <Header showCancel={false} />,
-                    }}
-                />
                 <Screen
                     name={route_strings.getLocation}
                     component={GetLocation}
@@ -42,6 +33,15 @@ const Routes: React.FC = () => {
                     name={route_strings.floodingsMap}
                     component={FloodingsMap}
                     initialParams={{ coords: {} }}
+                />
+                <Screen name={route_strings.login} component={Login} />
+                <Screen
+                    name={route_strings.signup}
+                    component={Signup}
+                    options={{
+                        headerShown: true,
+                        header: () => <Header showCancel={false} />,
+                    }}
                 />
                 <Screen
                     name={route_strings.floodingsDetails}

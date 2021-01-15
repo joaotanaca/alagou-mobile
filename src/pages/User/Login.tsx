@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import { View, Text, StyleSheet } from "react-native";
 import { Avatar, Button, TextInput } from "react-native-paper";
 import route_strings from "../../utils/strings/routes";
+import Header from "../../components/Header";
 
 // import { Container } from './styles';
 
@@ -17,49 +18,52 @@ const User: React.FC = () => {
         },
     };
     return (
-        <View style={styles.container}>
-            <Avatar.Icon icon="account" theme={theme} size={100} />
-            <Text style={styles.title}>Bem vindo</Text>
-            <Text style={styles.subtitle}>Entre para continuar</Text>
-            <View style={styles.inputsContainer}>
-                <TextInput
-                    label="Email"
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                    left={<TextInput.Icon name="email" color="#0086c3" />}
-                    style={styles.input}
-                    theme={theme}
-                />
-                <TextInput
-                    label="Senha"
-                    secureTextEntry={true}
-                    left={<TextInput.Icon name="lock" color="#0086c3" />}
-                    style={styles.input}
-                    theme={theme}
-                />
-                <Button
-                    mode="contained"
-                    onPress={() => console.log("Pressed")}
-                    contentStyle={buttonStyles.container}
-                    labelStyle={buttonStyles.label}
-                    style={{ marginTop: 15 }}
-                >
-                    Login
-                </Button>
+        <>
+            <Header showCancel={false} goHome />
+            <View style={styles.container}>
+                <Avatar.Icon icon="account" theme={theme} size={100} />
+                <Text style={styles.title}>Bem vindo</Text>
+                <Text style={styles.subtitle}>Entre para continuar</Text>
+                <View style={styles.inputsContainer}>
+                    <TextInput
+                        label="Email"
+                        keyboardType="email-address"
+                        autoCapitalize="none"
+                        left={<TextInput.Icon name="email" color="#0086c3" />}
+                        style={styles.input}
+                        theme={theme}
+                    />
+                    <TextInput
+                        label="Senha"
+                        secureTextEntry={true}
+                        left={<TextInput.Icon name="lock" color="#0086c3" />}
+                        style={styles.input}
+                        theme={theme}
+                    />
+                    <Button
+                        mode="contained"
+                        onPress={() => console.log("Pressed")}
+                        contentStyle={buttonStyles.container}
+                        labelStyle={buttonStyles.label}
+                        style={{ marginTop: 15 }}
+                    >
+                        Login
+                    </Button>
+                </View>
+                <View style={redirectSignup.container}>
+                    <Text style={styles.textSignup}>Não tem conta?</Text>
+                    <Button
+                        compact
+                        uppercase={false}
+                        labelStyle={redirectSignup.label}
+                        onPress={() => navigate.navigate(route_strings.signup)}
+                        theme={theme}
+                    >
+                        crie uma conta agora
+                    </Button>
+                </View>
             </View>
-            <View style={redirectSignup.container}>
-                <Text style={styles.textSignup}>Não tem conta?</Text>
-                <Button
-                    compact
-                    uppercase={false}
-                    labelStyle={redirectSignup.label}
-                    onPress={() => navigate.navigate(route_strings.signup)}
-                    theme={theme}
-                >
-                    crie uma conta agora
-                </Button>
-            </View>
-        </View>
+        </>
     );
 };
 

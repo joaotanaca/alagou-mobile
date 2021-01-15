@@ -8,11 +8,17 @@ interface HeaderProps {
     title?: string;
     showCancel?: boolean;
     border?: boolean;
+    goHome?: boolean;
 }
 
 const { StatusBarManager } = NativeModules;
 
-const Header = ({ title, showCancel = true, border }: HeaderProps) => {
+const Header = ({
+    title,
+    showCancel = true,
+    border = false,
+    goHome = false,
+}: HeaderProps) => {
     const navigation = useNavigation();
     const HandleBackHomePage = () => {
         navigation.navigate("FloodingsMap");
@@ -26,15 +32,17 @@ const Header = ({ title, showCancel = true, border }: HeaderProps) => {
                 borderColor: "#dde3f0",
             }}
         >
-            <BorderlessButton onPress={navigation.goBack}>
-                <Feather name="arrow-left" size={24} color="#29b6f6" />
+            <BorderlessButton
+                onPress={goHome ? HandleBackHomePage : navigation.goBack}
+            >
+                <Feather name="arrow-left" size={34} color="#29b6f6" />
             </BorderlessButton>
 
             {title && <Text style={styles.title}>{title}</Text>}
 
             {showCancel ? (
                 <BorderlessButton onPress={HandleBackHomePage}>
-                    <Feather name="x" size={24} color="#ff669d" />
+                    <Feather name="x" size={34} color="#ff669d" />
                 </BorderlessButton>
             ) : (
                 <View />
