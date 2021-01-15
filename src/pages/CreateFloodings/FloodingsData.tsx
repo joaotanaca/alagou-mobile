@@ -35,13 +35,12 @@ export default function FloodingsData() {
     }, []);
     const handleCreateFloodings = () => {
         const { latitude, longitude } = position;
-
-        const data = new FormData();
-
-        data.append("name", name);
-        data.append("note", note);
-        data.append("latitude", String(latitude));
-        data.append("longitude", String(longitude));
+        const data = {
+            name,
+            note,
+            latitude: String(latitude),
+            longitude: String(longitude),
+        };
 
         api.post("/floodings", data)
             .then(() => {

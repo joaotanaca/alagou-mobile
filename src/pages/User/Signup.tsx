@@ -1,12 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { View, Text, StyleSheet } from "react-native";
-import { Avatar, Button, TextInput } from "react-native-paper";
+import { View, Text, StyleSheet, KeyboardAvoidingView } from "react-native";
+import { Button, TextInput } from "react-native-paper";
 import route_strings from "../../utils/strings/routes";
+import api from "../../services/api";
+import { useDispatch } from "react-redux";
+import { login } from "../../store/actions/user";
+import strings from "../../utils/strings/routes";
 
 // import { Container } from './styles';
 
 const User: React.FC = () => {
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [phone, setPhone] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const dispatch = useDispatch();
     const navigate = useNavigation();
     const theme = {
         colors: {
@@ -16,14 +26,34 @@ const User: React.FC = () => {
             placeholder: "#0086c3",
         },
     };
+
+    const handleSubmit = async () => {
+        const data = {
+            name,
+            email,
+            phone,
+            password,
+        };
+        try {
+            const res = await api.post("/user/create", data);
+            console.log(res.data);
+            dispatch(login(res.data));
+            navigate.navigate(strings.selectMapPosition);
+        } catch (error) {
+            alert(error.message);
+        }
+    };
+
     return (
-        <View style={styles.container}>
+        <KeyboardAvoidingView style={styles.container} behavior="position">
             <Text style={styles.title}>Criação de Conta</Text>
             <Text style={styles.subtitle}>Crie uma nova conta</Text>
             <View style={styles.inputsContainer}>
                 <TextInput
                     label="Nome"
                     keyboardType="default"
+                    value={name}
+                    onChangeText={setName}
                     left={<TextInput.Icon name="account" color="#0086c3" />}
                     style={styles.input}
                     theme={theme}
@@ -32,6 +62,8 @@ const User: React.FC = () => {
                     label="Email"
                     keyboardType="email-address"
                     autoCapitalize="none"
+                    value={email}
+                    onChangeText={setEmail}
                     left={<TextInput.Icon name="email" color="#0086c3" />}
                     style={styles.input}
                     theme={theme}
@@ -40,6 +72,8 @@ const User: React.FC = () => {
                     label="Celular"
                     keyboardType="phone-pad"
                     autoCapitalize="none"
+                    value={phone}
+                    onChangeText={setPhone}
                     left={
                         <TextInput.Icon
                             name="cellphone-android"
@@ -53,6 +87,8 @@ const User: React.FC = () => {
                 <TextInput
                     label="Senha"
                     secureTextEntry={true}
+                    value={password}
+                    onChangeText={setPassword}
                     left={<TextInput.Icon name="lock" color="#0086c3" />}
                     style={styles.input}
                     theme={theme}
@@ -60,18 +96,20 @@ const User: React.FC = () => {
                 <TextInput
                     label="Confirmar senha"
                     secureTextEntry={true}
+                    value={confirmPassword}
+                    onChangeText={setConfirmPassword}
                     left={<TextInput.Icon name="lock" color="#0086c3" />}
                     style={styles.input}
                     theme={theme}
                 />
                 <Button
                     mode="contained"
-                    onPress={() => console.log("Pressed")}
+                    onPress={handleSubmit}
                     contentStyle={buttonStyles.container}
                     labelStyle={buttonStyles.label}
                     style={{ marginTop: 15 }}
                 >
-                    Login
+                    Cadastrar
                 </Button>
             </View>
             <View style={redirectSignup.container}>
@@ -86,15 +124,13 @@ const User: React.FC = () => {
                     faça login
                 </Button>
             </View>
-        </View>
+        </KeyboardAvoidingView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: "flex-start",
-        alignItems: "center",
         paddingVertical: 10,
         paddingHorizontal: 40,
         backgroundColor: "#ffffff",
@@ -103,11 +139,13 @@ const styles = StyleSheet.create({
         fontSize: 42,
         fontFamily: "Nunito_700Bold",
         color: "#000",
+        textAlign: "center",
     },
     subtitle: {
         fontSize: 20,
         color: "#a7c0cd",
         fontFamily: "Nunito_600SemiBold",
+        textAlign: "center",
     },
     inputsContainer: {
         marginVertical: 30,
