@@ -20,6 +20,7 @@ export default function SelectMapPosition() {
             navigation.navigate(routes_strings.login);
         }
     });
+
     const handleNextStep = () => {
         navigation.navigate("FloodingsData", { position });
     };

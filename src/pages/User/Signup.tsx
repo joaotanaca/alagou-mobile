@@ -34,14 +34,14 @@ const User: React.FC = () => {
             phone,
             password,
         };
-        try {
-            const res = await api.post("/user/create", data);
-            console.log(res.data);
-            dispatch(login(res.data));
-            navigate.navigate(strings.selectMapPosition);
-        } catch (error) {
-            alert(error.message);
-        }
+        api.post("/user/create", data)
+            .then(({ data }) => {
+                dispatch(login(data));
+                navigate.navigate(strings.selectMapPosition);
+            })
+            .catch((err) => {
+                alert(JSON.stringify(err.response.data));
+            });
     };
 
     return (
