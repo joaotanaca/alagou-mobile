@@ -5,6 +5,8 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import api from "../../services/api";
 import { Button } from "react-native-paper";
 import location from "../../services/location";
+import { useSelector } from "react-redux";
+import { GlobalState } from "../../utils/interfaces/redux";
 
 interface FloodingsDataParams {
     position: {
@@ -16,6 +18,8 @@ interface FloodingsDataParams {
 export default function FloodingsData() {
     const routes = useRoute();
     const navigation = useNavigation();
+    const [loading, setLoading] = useState(true);
+    const { user } = useSelector((state: GlobalState) => state);
 
     const { position } = routes.params as FloodingsDataParams;
     const [name, setName] = useState("");
@@ -31,6 +35,7 @@ export default function FloodingsData() {
                 },
             });
             setName(data.display_name);
+            setLoading(false);
         })();
     }, []);
     const handleCreateFloodings = () => {
@@ -40,6 +45,7 @@ export default function FloodingsData() {
             note,
             latitude: String(latitude),
             longitude: String(longitude),
+            user: user.id,
         };
 
         api.post("/floodings", data)
@@ -59,7 +65,9 @@ export default function FloodingsData() {
             <Text style={styles.title}>Ponto de alagamento</Text>
 
             <Text style={styles.label}>Localização</Text>
-            <Text style={styles.location_text}>{name}</Text>
+            <Text style={styles.location_text}>
+                {!loading ? name : "Carregando localização..."}
+            </Text>
 
             <Text style={styles.label}>Observações</Text>
             <TextInput

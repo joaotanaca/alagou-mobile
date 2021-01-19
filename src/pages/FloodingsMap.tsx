@@ -12,7 +12,7 @@ import api from "../services/api";
 import { FAB } from "react-native-paper";
 
 interface FloodingsItem {
-    id: number;
+    _id: number;
     name: string;
     latitude: number;
     longitude: number;
@@ -77,15 +77,15 @@ const FloodingsMap: React.FC = () => {
                 >
                     {Floodings.map((Floodings) => (
                         <Marker
-                            key={Floodings.id}
+                            key={Floodings._id}
                             icon={mapMarker}
                             calloutAnchor={{
                                 x: 2.7,
                                 y: 0.9,
                             }}
                             coordinate={{
-                                latitude: Floodings.latitude,
-                                longitude: Floodings.longitude,
+                                latitude: Number(Floodings.latitude),
+                                longitude: Number(Floodings.longitude),
                             }}
                         >
                             <Callout

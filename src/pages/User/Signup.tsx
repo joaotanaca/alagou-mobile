@@ -4,9 +4,10 @@ import { View, Text, StyleSheet, KeyboardAvoidingView } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import route_strings from "../../utils/strings/routes";
 import api from "../../services/api";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../store/actions/user";
 import strings from "../../utils/strings/routes";
+import { GlobalState } from "../../utils/interfaces/redux";
 
 // import { Container } from './styles';
 
@@ -45,73 +46,75 @@ const User: React.FC = () => {
     };
 
     return (
-        <KeyboardAvoidingView style={styles.container} behavior="position">
-            <Text style={styles.title}>Criação de Conta</Text>
-            <Text style={styles.subtitle}>Crie uma nova conta</Text>
-            <View style={styles.inputsContainer}>
-                <TextInput
-                    label="Nome"
-                    keyboardType="default"
-                    value={name}
-                    onChangeText={setName}
-                    left={<TextInput.Icon name="account" color="#0086c3" />}
-                    style={styles.input}
-                    theme={theme}
-                />
-                <TextInput
-                    label="Email"
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                    value={email}
-                    onChangeText={setEmail}
-                    left={<TextInput.Icon name="email" color="#0086c3" />}
-                    style={styles.input}
-                    theme={theme}
-                />
-                <TextInput
-                    label="Celular"
-                    keyboardType="phone-pad"
-                    autoCapitalize="none"
-                    value={phone}
-                    onChangeText={setPhone}
-                    left={
-                        <TextInput.Icon
-                            name="cellphone-android"
-                            color="#0086c3"
-                        />
-                    }
-                    style={styles.input}
-                    theme={theme}
-                />
+        <View style={styles.container}>
+            <KeyboardAvoidingView behavior="position">
+                <Text style={styles.title}>Criação de Conta</Text>
+                <Text style={styles.subtitle}>Crie uma nova conta</Text>
+                <View style={styles.inputsContainer}>
+                    <TextInput
+                        label="Nome"
+                        keyboardType="default"
+                        value={name}
+                        onChangeText={setName}
+                        left={<TextInput.Icon name="account" color="#0086c3" />}
+                        style={styles.input}
+                        theme={theme}
+                    />
+                    <TextInput
+                        label="Email"
+                        keyboardType="email-address"
+                        autoCapitalize="none"
+                        value={email}
+                        onChangeText={setEmail}
+                        left={<TextInput.Icon name="email" color="#0086c3" />}
+                        style={styles.input}
+                        theme={theme}
+                    />
+                    <TextInput
+                        label="Celular"
+                        keyboardType="phone-pad"
+                        autoCapitalize="none"
+                        value={phone}
+                        onChangeText={setPhone}
+                        left={
+                            <TextInput.Icon
+                                name="cellphone-android"
+                                color="#0086c3"
+                            />
+                        }
+                        style={styles.input}
+                        theme={theme}
+                    />
 
-                <TextInput
-                    label="Senha"
-                    secureTextEntry={true}
-                    value={password}
-                    onChangeText={setPassword}
-                    left={<TextInput.Icon name="lock" color="#0086c3" />}
-                    style={styles.input}
-                    theme={theme}
-                />
-                <TextInput
-                    label="Confirmar senha"
-                    secureTextEntry={true}
-                    value={confirmPassword}
-                    onChangeText={setConfirmPassword}
-                    left={<TextInput.Icon name="lock" color="#0086c3" />}
-                    style={styles.input}
-                    theme={theme}
-                />
-                <Button
-                    mode="contained"
-                    onPress={handleSubmit}
-                    contentStyle={buttonStyles.container}
-                    labelStyle={buttonStyles.label}
-                    style={{ marginTop: 15 }}
-                >
-                    Cadastrar
-                </Button>
-            </View>
+                    <TextInput
+                        label="Senha"
+                        secureTextEntry={true}
+                        value={password}
+                        onChangeText={setPassword}
+                        left={<TextInput.Icon name="lock" color="#0086c3" />}
+                        style={styles.input}
+                        theme={theme}
+                    />
+                    <TextInput
+                        label="Confirmar senha"
+                        secureTextEntry={true}
+                        value={confirmPassword}
+                        onChangeText={setConfirmPassword}
+                        left={<TextInput.Icon name="lock" color="#0086c3" />}
+                        style={styles.input}
+                        theme={theme}
+                    />
+                    <Button
+                        mode="contained"
+                        onPress={handleSubmit}
+                        contentStyle={buttonStyles.container}
+                        labelStyle={buttonStyles.label}
+                        style={{ marginTop: 15 }}
+                    >
+                        Cadastrar
+                    </Button>
+                </View>
+            </KeyboardAvoidingView>
             <View style={redirectSignup.container}>
                 <Text style={styles.textSignup}>Já tem conta?</Text>
                 <Button
@@ -124,7 +127,7 @@ const User: React.FC = () => {
                     faça login
                 </Button>
             </View>
-        </KeyboardAvoidingView>
+        </View>
     );
 };
 
