@@ -12,7 +12,7 @@ import api from "../services/api";
 import { FAB } from "react-native-paper";
 
 interface FloodingsItem {
-    _id: number;
+    _id: string;
     name: string;
     latitude: number;
     longitude: number;
@@ -54,7 +54,7 @@ const FloodingsMap: React.FC = () => {
         return;
     }, []);
 
-    const handleNavigationToFloodingsDetails = (id: number) => {
+    const handleNavigationToFloodingsDetails = (id: string) => {
         navigation.navigate("FloodingsDetails", { id });
     };
 
@@ -75,30 +75,31 @@ const FloodingsMap: React.FC = () => {
                     }}
                     loadingEnabled
                 >
-                    {Floodings.map((Floodings) => (
+                    {Floodings.map((Flooding, index) => (
                         <Marker
-                            key={Floodings._id}
+                            key={index}
                             icon={mapMarker}
                             calloutAnchor={{
                                 x: 2.7,
                                 y: 0.9,
                             }}
                             coordinate={{
-                                latitude: Number(Floodings.latitude),
-                                longitude: Number(Floodings.longitude),
+                                latitude: Number(Flooding.latitude),
+                                longitude: Number(Flooding.longitude),
                             }}
+                            style={{ height: 60 }}
                         >
                             <Callout
                                 tooltip
                                 onPress={() => {
                                     handleNavigationToFloodingsDetails(
-                                        Floodings.id,
+                                        Flooding._id,
                                     );
                                 }}
                             >
                                 <View style={styles.calloutContainer}>
                                     <Text style={styles.calloutText}>
-                                        {Floodings.name}
+                                        {Flooding.name.split(",")[0]}
                                     </Text>
                                 </View>
                             </Callout>
@@ -132,8 +133,9 @@ const styles = StyleSheet.create({
     },
     calloutContainer: {
         width: 160,
-        height: 46,
+        height: "auto",
         paddingHorizontal: 16,
+        paddingVertical: 8,
         backgroundColor: "rgba(255, 255, 255, 0.8)",
         borderRadius: 16,
         justifyContent: "center",

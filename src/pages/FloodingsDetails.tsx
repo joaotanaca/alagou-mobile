@@ -65,8 +65,8 @@ export default function FloodingsDetails() {
                 <View style={styles.mapContainer}>
                     <MapView
                         initialRegion={{
-                            latitude: Floodings.latitude,
-                            longitude: Floodings.longitude,
+                            latitude: Number(Floodings.latitude),
+                            longitude: Number(Floodings.longitude),
                             latitudeDelta: 0.008,
                             longitudeDelta: 0.008,
                         }}
@@ -79,8 +79,8 @@ export default function FloodingsDetails() {
                         <Marker
                             icon={mapMarkerImg}
                             coordinate={{
-                                latitude: Floodings.latitude,
-                                longitude: Floodings.longitude,
+                                latitude: Number(Floodings.latitude),
+                                longitude: Number(Floodings.longitude),
                             }}
                         />
                     </MapView>
