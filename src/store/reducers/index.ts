@@ -1,3 +1,4 @@
 import { combineReducers } from "redux";
 import user from "./user";
-export default combineReducers({ user });
+import location from "./location";
+export default combineReducers({ user, location });

@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 
 export default function SelectMapPosition() {
     const navigation = useNavigation();
-    const { user } = useSelector((state: GlobalState) => state);
+    const { user, location } = useSelector((state: GlobalState) => state);
 
     const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
 
@@ -33,8 +33,8 @@ export default function SelectMapPosition() {
         <View style={styles.container}>
             <MapView
                 initialRegion={{
-                    latitude: -27.2092052,
-                    longitude: -49.6401092,
+                    latitude: location.latitude,
+                    longitude: location.longitude,
                     latitudeDelta: 0.008,
                     longitudeDelta: 0.008,
                 }}

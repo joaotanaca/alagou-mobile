@@ -43,8 +43,8 @@ export default function FloodingsData() {
         const data = {
             name,
             note,
-            latitude: String(latitude),
-            longitude: String(longitude),
+            latitude: latitude,
+            longitude: longitude,
             user: user.id,
         };
 

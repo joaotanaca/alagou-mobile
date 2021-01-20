@@ -4,9 +4,12 @@ import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import { useNavigation } from "@react-navigation/native";
 import { ActivityIndicator, Button, Colors } from "react-native-paper";
+import { useDispatch } from "react-redux";
+import { setLocation } from "../../store/actions/location";
 
 const LocationUser: React.FC = () => {
     const navigation = useNavigation();
+    const dispatch = useDispatch();
     const [loading, setLoading] = useState(true);
     const requestLocation = async () => {
         try {
@@ -15,16 +18,22 @@ const LocationUser: React.FC = () => {
             !loading && setLoading(true);
             if (!gpsAvailable) {
                 await Permissions.askAsync(Permissions.LOCATION);
-                const { coords } = await Location.getCurrentPositionAsync({
+                const {
+                    coords: { latitude, longitude },
+                } = await Location.getCurrentPositionAsync({
                     accuracy: Location.Accuracy.High,
                 });
-                navigation.navigate("FloodingsMap", { coords });
+                dispatch(setLocation({ latitude, longitude }));
+                navigation.navigate("FloodingsMap");
             }
             if (!!gpsAvailable && status === "granted") {
-                const { coords } = await Location.getCurrentPositionAsync({
+                const {
+                    coords: { latitude, longitude },
+                } = await Location.getCurrentPositionAsync({
                     accuracy: Location.Accuracy.High,
                 });
-                navigation.navigate("FloodingsMap", { coords });
+                dispatch(setLocation({ latitude, longitude }));
+                navigation.navigate("FloodingsMap");
             }
         } catch (err) {
             setLoading(false);

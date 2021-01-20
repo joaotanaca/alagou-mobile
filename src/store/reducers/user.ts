@@ -1,10 +1,11 @@
-import { UserAction } from "../../utils/interfaces/user";
+import { Action } from "../../utils/interfaces/redux";
+import { UserI } from "../../utils/interfaces/user";
 import { LOGIN, LOGOFF } from "../actions/user";
 
-const userReducer = (state = null, { type, user }: UserAction) => {
+const userReducer = (state = null, { type, data }: Action<UserI>) => {
     switch (type) {
         case LOGIN: {
-            return user;
+            return data;
         }
         case LOGOFF: {
             return null;

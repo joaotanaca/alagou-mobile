@@ -14,8 +14,3 @@ export interface UserI {
     email: string;
     cellphone: string;
 }
-
-export interface UserAction {
-    type: string;
-    user?: UserI;
-}

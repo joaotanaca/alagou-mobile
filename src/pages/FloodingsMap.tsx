@@ -10,6 +10,8 @@ import {
 import mapMarker from "../images/map-marker-a.png";
 import api from "../services/api";
 import { FAB } from "react-native-paper";
+import { useSelector } from "react-redux";
+import { GlobalState } from "../utils/interfaces/redux";
 
 interface FloodingsItem {
     _id: string;
@@ -18,18 +20,11 @@ interface FloodingsItem {
     longitude: number;
 }
 
-interface FloodingsPropsRoute {
-    coords?: {
-        latitude?: number;
-        longitude?: number;
-    };
-}
-
 const FloodingsMap: React.FC = () => {
     const navigation = useNavigation();
-    const routes = useRoute();
-    const { coords } = routes.params as FloodingsPropsRoute;
-
+    const { location: reduxLocation } = useSelector(
+        (state: GlobalState) => state,
+    );
     const [Floodings, setFloodings] = useState<FloodingsItem[]>([]);
     const [location, setLocation] = useState({
         latitude: 0,
@@ -43,7 +38,7 @@ const FloodingsMap: React.FC = () => {
     });
 
     useEffect(() => {
-        if (!coords?.latitude || !coords?.longitude) {
+        if (!reduxLocation.latitude || !reduxLocation.longitude) {
             (async () => {
                 const { coords } = await Location.getCurrentPositionAsync({
                     accuracy: Location.Accuracy.High,
@@ -63,13 +58,14 @@ const FloodingsMap: React.FC = () => {
     };
     return (
         <View style={styles.container}>
-            {(coords?.latitude || location.latitude !== 0) && (
+            {(reduxLocation?.latitude || location.latitude !== 0) && (
                 <MapView
                     provider={PROVIDER_GOOGLE}
                     style={styles.map}
                     initialRegion={{
-                        latitude: coords?.latitude ?? location.latitude,
-                        longitude: coords?.longitude ?? location.longitude,
+                        latitude: reduxLocation?.latitude ?? location.latitude,
+                        longitude:
+                            reduxLocation?.longitude ?? location.longitude,
                         latitudeDelta: 0.008,
                         longitudeDelta: 0.008,
                     }}
@@ -84,8 +80,8 @@ const FloodingsMap: React.FC = () => {
                                 y: 0.9,
                             }}
                             coordinate={{
-                                latitude: Number(Flooding.latitude),
-                                longitude: Number(Flooding.longitude),
+                                latitude: Flooding.latitude,
+                                longitude: Flooding.longitude,
                             }}
                             style={{ height: 60 }}
                         >
