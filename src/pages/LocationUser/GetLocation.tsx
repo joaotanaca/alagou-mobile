@@ -5,11 +5,16 @@ import * as Permissions from "expo-permissions";
 import { useNavigation } from "@react-navigation/native";
 import { ActivityIndicator, Button, Colors } from "react-native-paper";
 import { useDispatch } from "react-redux";
+import AsyncStorage, {
+    useAsyncStorage,
+} from "@react-native-async-storage/async-storage";
 import { setLocation } from "../../store/actions/location";
+import { login } from "../../store/actions/user";
 
 const LocationUser: React.FC = () => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
+    const { getItem } = useAsyncStorage("USER");
     const [loading, setLoading] = useState(true);
     const requestLocation = async () => {
         try {
@@ -39,12 +44,18 @@ const LocationUser: React.FC = () => {
             setLoading(false);
         }
     };
+
+    const loginAfterOpen = async () => {
+        const user = await getItem();
+        dispatch(login(JSON.parse(user ?? "null")));
+    };
     const handleNavigateToSearchLocation = () => {
         navigation.navigate("SearchLocation");
     };
 
     useEffect(() => {
         requestLocation();
+        loginAfterOpen();
     }, []);
 
     return (

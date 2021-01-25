@@ -40,6 +40,7 @@ export default function FloodingsData() {
     }, []);
     const handleCreateFloodings = () => {
         const { latitude, longitude } = position;
+        console.log(user.id);
         const data = {
             name,
             note,
@@ -47,7 +48,6 @@ export default function FloodingsData() {
             longitude: longitude,
             user: user.id,
         };
-
         api.post("/floodings", data)
             .then(() => {
                 navigation.navigate("FloodingsMap");

@@ -10,6 +10,7 @@ import mapMarker from "../images/map-marker-a.png";
 import api from "../services/api";
 import { GlobalState } from "../utils/interfaces/redux";
 import strings from "../utils/strings/routes";
+import { TextInput } from "react-native-paper";
 
 interface FloodingsItem {
     _id: string;
@@ -19,6 +20,7 @@ interface FloodingsItem {
 }
 
 const FloodingsMap: React.FC = () => {
+    //Declarações
     const navigation = useNavigation();
     const { location: reduxLocation, user } = useSelector(
         (state: GlobalState) => state,
@@ -38,35 +40,53 @@ const FloodingsMap: React.FC = () => {
             icon: <Icon name="traffic" size={24} color={"#FFF"} />,
             name: "button_traffic",
             buttonSize: 50,
-            position: 1,
-            color: traffic ? "green" : "red",
+            color: traffic ? "#3CDC8C" : "#db0e3b",
         },
         {
             text: `Sua localização no mapa está ${
                 userLocation ? "ativa" : "desativada"
             } `,
-            icon: <Icon name="my-location" size={24} color={"#FFF"} />,
+            icon: <Icon name="person-pin-circle" size={24} color={"#FFF"} />,
             name: "button_user_location",
             buttonSize: 50,
-            position: 2,
-            color: userLocation ? "green" : "red",
+            color: userLocation ? "#3CDC8C" : "#db0e3b",
         },
         {
             text: "Adicionar ponto de favoritos",
             icon: <Icon name="favorite" size={24} color={"#FFF"} />,
             name: "button_favorite",
             buttonSize: 50,
-            position: 3,
+            color: "#0086c3",
         },
         {
             text: "Criar um ponto de alagamento",
             icon: <Icon name="add-location" size={24} color={"#FFF"} />,
             name: "button_flootings",
             buttonSize: 50,
-            position: 4,
+            color: "#0086c3",
+        },
+        {
+            text: user?.name ?? "Logue-se ou cadastre-se",
+            icon: (
+                <TextInput.Icon
+                    name={user?.name ? "account-circle" : "login"}
+                    size={24}
+                    color={"#FFF"}
+                    onPress={() =>
+                        navigation.navigate(
+                            user?.name
+                                ? strings.selectMapPosition
+                                : strings.login,
+                        )
+                    }
+                />
+            ),
+            name: "button_user",
+            buttonSize: 50,
+            color: "#0086c3",
         },
     ];
-
+    //Funções de efeito
     useFocusEffect(() => {
         api.get("/floodings").then(({ data }) => {
             setFloodings(data);
@@ -82,14 +102,18 @@ const FloodingsMap: React.FC = () => {
                 setLocation(coords);
             })();
         }
+        console.log(user);
+
         return;
     }, []);
 
+    //Funções
     const handleNavigationToFloodingsDetails = (id: string) => {
         navigation.navigate(strings.floodingsDetails, { id });
     };
 
     const handleToCreateFloodings = () => {
+        console.log(user?.name);
         if (user?.name) navigation.navigate(strings.selectMapPosition);
         else navigation.navigate(strings.login);
     };
@@ -99,6 +123,7 @@ const FloodingsMap: React.FC = () => {
         else navigation.navigate(strings.login);
     };
 
+    //Render
     return (
         <View style={styles.container}>
             {(reduxLocation?.latitude || location.latitude !== 0) && (
@@ -154,8 +179,6 @@ const FloodingsMap: React.FC = () => {
                 </Text>
             </View>
             <FloatingAction
-                dismissKeyboardOnPress
-                showBackground={false}
                 actions={actions}
                 onPressItem={(name) => {
                     switch (name) {
@@ -182,6 +205,7 @@ const FloodingsMap: React.FC = () => {
                     }
                 }}
                 distanceToEdge={24}
+                color="#0086c3"
             />
         </View>
     );

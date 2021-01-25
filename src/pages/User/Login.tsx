@@ -17,49 +17,72 @@ const User: React.FC = () => {
         email: "",
         password: "",
     });
+    const [error, setError] = useState<string | null>();
     const dispatch = useDispatch();
     const theme = {
         colors: {
-            primary: "#0086c3",
+            primary: error ? "#db0e3b" : "#0086c3",
             background: "#FFF",
-            text: "#0086c3",
-            placeholder: "#0086c3",
+            text: error ? "#db0e3b" : "#0086c3",
+            placeholder: error ? "#db0e3b" : "#0086c3",
+            error: "#db0e3b",
         },
     };
-    const handleLogin = async () => {
-        const { data: response, status } = await api.post("/user/login", data);
-        if (status === 200) {
-            dispatch(login(response));
-            navigate.navigate(strings.selectMapPosition);
-        }
+    const handleLogin = () => {
+        api.post("/user/login", data)
+            .then(({ data: response }) => {
+                dispatch(login(response));
+                navigate.navigate(strings.selectMapPosition);
+            })
+            .catch((err) => {
+                setError(err.response.data.message);
+            });
     };
     return (
         <>
             <Header showCancel={false} goHome />
             <View style={styles.container}>
                 <Avatar.Icon icon="account" theme={theme} size={100} />
-                <Text style={styles.title}>Bem vindo</Text>
-                <Text style={styles.subtitle}>Entre para continuar</Text>
+                <Text style={styles.title}>
+                    {error ? "Algo deu errado" : "Bem vindo"}
+                </Text>
+                <Text style={styles.subtitle}>
+                    {error ?? "Entre para continuar"}
+                </Text>
                 <View style={styles.inputsContainer}>
                     <TextInput
                         label="Email"
                         keyboardType="email-address"
                         autoCapitalize="none"
-                        left={<TextInput.Icon name="email" color="#0086c3" />}
-                        style={styles.input}
-                        onChangeText={(email) =>
-                            setData((prev) => ({ ...prev, email }))
+                        left={
+                            <TextInput.Icon
+                                name="email"
+                                color={error ? "#db0e3b" : "#0086c3"}
+                            />
                         }
+                        style={styles.input}
+                        onChangeText={(email) => {
+                            if (error) setError(null);
+                            setData((prev) => ({ ...prev, email }));
+                        }}
+                        error={!!error}
                         theme={theme}
                     />
                     <TextInput
                         label="Senha"
                         secureTextEntry={true}
-                        left={<TextInput.Icon name="lock" color="#0086c3" />}
-                        style={styles.input}
-                        onChangeText={(password) =>
-                            setData((prev) => ({ ...prev, password }))
+                        left={
+                            <TextInput.Icon
+                                name="lock"
+                                color={error ? "#db0e3b" : "#0086c3"}
+                            />
                         }
+                        style={styles.input}
+                        onChangeText={(password) => {
+                            if (error) setError(null);
+                            setData((prev) => ({ ...prev, password }));
+                        }}
+                        error={!!error}
                         theme={theme}
                     />
                     <Button

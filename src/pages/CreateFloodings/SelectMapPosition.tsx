@@ -5,7 +5,6 @@ import { RectButton } from "react-native-gesture-handler";
 import MapView, { MapEvent, Marker } from "react-native-maps";
 
 import mapMarkerImg from "../../images/map-marker-a.png";
-import routes_strings from "../../utils/strings/routes";
 import { GlobalState } from "../../utils/interfaces/redux";
 import { useSelector } from "react-redux";
 
