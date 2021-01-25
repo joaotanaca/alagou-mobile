@@ -11,15 +11,9 @@ import { useSelector } from "react-redux";
 
 export default function SelectMapPosition() {
     const navigation = useNavigation();
-    const { user, location } = useSelector((state: GlobalState) => state);
+    const { location } = useSelector((state: GlobalState) => state);
 
     const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
-
-    useFocusEffect(() => {
-        if (!user?.name) {
-            navigation.navigate(routes_strings.login);
-        }
-    });
 
     const handleNextStep = () => {
         navigation.navigate("FloodingsData", { position });

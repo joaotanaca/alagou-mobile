@@ -2,16 +2,14 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import MapView, { Marker, Callout, PROVIDER_GOOGLE } from "react-native-maps";
 import * as Location from "expo-location";
-import {
-    useFocusEffect,
-    useNavigation,
-    useRoute,
-} from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { FloatingAction } from "react-native-floating-action";
+import { useSelector } from "react-redux";
+import Icon from "react-native-vector-icons/MaterialIcons";
 import mapMarker from "../images/map-marker-a.png";
 import api from "../services/api";
-import { FAB } from "react-native-paper";
-import { useSelector } from "react-redux";
 import { GlobalState } from "../utils/interfaces/redux";
+import strings from "../utils/strings/routes";
 
 interface FloodingsItem {
     _id: string;
@@ -22,7 +20,7 @@ interface FloodingsItem {
 
 const FloodingsMap: React.FC = () => {
     const navigation = useNavigation();
-    const { location: reduxLocation } = useSelector(
+    const { location: reduxLocation, user } = useSelector(
         (state: GlobalState) => state,
     );
     const [Floodings, setFloodings] = useState<FloodingsItem[]>([]);
@@ -30,6 +28,44 @@ const FloodingsMap: React.FC = () => {
         latitude: 0,
         longitude: 0,
     });
+    const [{ userLocation, traffic }, setActions] = useState({
+        userLocation: false,
+        traffic: false,
+    });
+    const actions = [
+        {
+            text: `Tráfego ${traffic ? "ativo" : "desativado"} `,
+            icon: <Icon name="traffic" size={24} color={"#FFF"} />,
+            name: "button_traffic",
+            buttonSize: 50,
+            position: 1,
+            color: traffic ? "green" : "red",
+        },
+        {
+            text: `Sua localização no mapa está ${
+                userLocation ? "ativa" : "desativada"
+            } `,
+            icon: <Icon name="my-location" size={24} color={"#FFF"} />,
+            name: "button_user_location",
+            buttonSize: 50,
+            position: 2,
+            color: userLocation ? "green" : "red",
+        },
+        {
+            text: "Adicionar ponto de favoritos",
+            icon: <Icon name="favorite" size={24} color={"#FFF"} />,
+            name: "button_favorite",
+            buttonSize: 50,
+            position: 3,
+        },
+        {
+            text: "Criar um ponto de alagamento",
+            icon: <Icon name="add-location" size={24} color={"#FFF"} />,
+            name: "button_flootings",
+            buttonSize: 50,
+            position: 4,
+        },
+    ];
 
     useFocusEffect(() => {
         api.get("/floodings").then(({ data }) => {
@@ -50,12 +86,19 @@ const FloodingsMap: React.FC = () => {
     }, []);
 
     const handleNavigationToFloodingsDetails = (id: string) => {
-        navigation.navigate("FloodingsDetails", { id });
+        navigation.navigate(strings.floodingsDetails, { id });
     };
 
     const handleToCreateFloodings = () => {
-        navigation.navigate("SelectMapPosition");
+        if (user?.name) navigation.navigate(strings.selectMapPosition);
+        else navigation.navigate(strings.login);
     };
+
+    const handleToCreateFloodingsFavorite = () => {
+        if (user?.name) navigation.navigate(strings.selectMapPosition);
+        else navigation.navigate(strings.login);
+    };
+
     return (
         <View style={styles.container}>
             {(reduxLocation?.latitude || location.latitude !== 0) && (
@@ -70,20 +113,21 @@ const FloodingsMap: React.FC = () => {
                         longitudeDelta: 0.008,
                     }}
                     loadingEnabled
+                    showsTraffic={traffic}
+                    showsUserLocation={userLocation}
                 >
                     {Floodings.map((Flooding, index) => (
                         <Marker
                             key={index}
                             icon={mapMarker}
                             calloutAnchor={{
-                                x: 2.7,
-                                y: 0.9,
+                                x: 1.9,
+                                y: 0.3,
                             }}
                             coordinate={{
                                 latitude: Flooding.latitude,
                                 longitude: Flooding.longitude,
                             }}
-                            style={{ height: 60 }}
                         >
                             <Callout
                                 tooltip
@@ -108,14 +152,37 @@ const FloodingsMap: React.FC = () => {
                 <Text style={styles.footerText}>
                     {Floodings.length} Alagamentos encontrados
                 </Text>
-
-                <FAB
-                    style={styles.createFloodingsButton}
-                    onPress={handleToCreateFloodings}
-                    icon="plus"
-                    color="#FFF"
-                />
             </View>
+            <FloatingAction
+                dismissKeyboardOnPress
+                showBackground={false}
+                actions={actions}
+                onPressItem={(name) => {
+                    switch (name) {
+                        case "button_flootings": {
+                            handleToCreateFloodings();
+                        }
+                        case "button_favorite": {
+                            handleToCreateFloodingsFavorite();
+                        }
+                        case "button_user_location": {
+                            setActions((prev) => ({
+                                ...prev,
+                                userLocation: !prev.userLocation,
+                            }));
+                            break;
+                        }
+                        case "button_traffic": {
+                            setActions((prev) => ({
+                                ...prev,
+                                traffic: !prev.traffic,
+                            }));
+                            break;
+                        }
+                    }
+                }}
+                distanceToEdge={24}
+            />
         </View>
     );
 };
@@ -129,12 +196,14 @@ const styles = StyleSheet.create({
     },
     calloutContainer: {
         width: 160,
-        height: "auto",
+        height: "100%",
         paddingHorizontal: 16,
         paddingVertical: 8,
-        backgroundColor: "rgba(255, 255, 255, 0.8)",
+        backgroundColor: "rgba(255, 255, 255, 1)",
         borderRadius: 16,
+        borderBottomLeftRadius: 0,
         justifyContent: "center",
+        alignSelf: "flex-start",
     },
 
     calloutText: {
@@ -147,10 +216,9 @@ const styles = StyleSheet.create({
         position: "absolute",
         left: 24,
         right: 24,
-        bottom: 32,
-
+        bottom: 24,
         backgroundColor: "#fff",
-        borderRadius: 20,
+        borderRadius: 30,
         height: 56,
         paddingLeft: 24,
 
@@ -158,7 +226,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
 
-        elevation: 3,
+        elevation: 0,
     },
 
     footerText: {

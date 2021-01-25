@@ -1,14 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { View, Text, StyleSheet } from "react-native";
 import { Avatar, Button, TextInput } from "react-native-paper";
 import route_strings from "../../utils/strings/routes";
 import Header from "../../components/Header";
+import api from "../../services/api";
+import { useDispatch } from "react-redux";
+import { login } from "../../store/actions/user";
+import strings from "../../utils/strings/routes";
 
 // import { Container } from './styles';
 
 const User: React.FC = () => {
     const navigate = useNavigation();
+    const [data, setData] = useState({
+        email: "",
+        password: "",
+    });
+    const dispatch = useDispatch();
     const theme = {
         colors: {
             primary: "#0086c3",
@@ -16,6 +25,13 @@ const User: React.FC = () => {
             text: "#0086c3",
             placeholder: "#0086c3",
         },
+    };
+    const handleLogin = async () => {
+        const { data: response, status } = await api.post("/user/login", data);
+        if (status === 200) {
+            dispatch(login(response));
+            navigate.navigate(strings.selectMapPosition);
+        }
     };
     return (
         <>
@@ -31,6 +47,9 @@ const User: React.FC = () => {
                         autoCapitalize="none"
                         left={<TextInput.Icon name="email" color="#0086c3" />}
                         style={styles.input}
+                        onChangeText={(email) =>
+                            setData((prev) => ({ ...prev, email }))
+                        }
                         theme={theme}
                     />
                     <TextInput
@@ -38,11 +57,14 @@ const User: React.FC = () => {
                         secureTextEntry={true}
                         left={<TextInput.Icon name="lock" color="#0086c3" />}
                         style={styles.input}
+                        onChangeText={(password) =>
+                            setData((prev) => ({ ...prev, password }))
+                        }
                         theme={theme}
                     />
                     <Button
                         mode="contained"
-                        onPress={() => console.log("Pressed")}
+                        onPress={handleLogin}
                         contentStyle={buttonStyles.container}
                         labelStyle={buttonStyles.label}
                         style={{ marginTop: 15 }}
