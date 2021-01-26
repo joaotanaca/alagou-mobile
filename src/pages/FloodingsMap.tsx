@@ -102,7 +102,6 @@ const FloodingsMap: React.FC = () => {
                 setLocation(coords);
             })();
         }
-        console.log(user);
 
         return;
     }, []);
@@ -113,7 +112,6 @@ const FloodingsMap: React.FC = () => {
     };
 
     const handleToCreateFloodings = () => {
-        console.log(user?.name);
         if (user?.name) navigation.navigate(strings.selectMapPosition);
         else navigation.navigate(strings.login);
     };

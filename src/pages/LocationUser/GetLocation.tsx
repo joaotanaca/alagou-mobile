@@ -5,9 +5,7 @@ import * as Permissions from "expo-permissions";
 import { useNavigation } from "@react-navigation/native";
 import { ActivityIndicator, Button, Colors } from "react-native-paper";
 import { useDispatch } from "react-redux";
-import AsyncStorage, {
-    useAsyncStorage,
-} from "@react-native-async-storage/async-storage";
+import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import { setLocation } from "../../store/actions/location";
 import { login } from "../../store/actions/user";
 
