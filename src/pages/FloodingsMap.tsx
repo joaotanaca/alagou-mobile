@@ -51,13 +51,13 @@ const FloodingsMap: React.FC = () => {
             buttonSize: 50,
             color: userLocation ? "#3CDC8C" : "#db0e3b",
         },
-        {
-            text: "Adicionar ponto de favoritos",
-            icon: <Icon name="favorite" size={24} color={"#FFF"} />,
-            name: "button_favorite",
-            buttonSize: 50,
-            color: "#0086c3",
-        },
+        // {
+        //     text: "Adicionar ponto de favoritos",
+        //     icon: <Icon name="favorite" size={24} color={"#FFF"} />,
+        //     name: "button_favorite",
+        //     buttonSize: 50,
+        //     color: "#0086c3",
+        // },
         {
             text: "Criar um ponto de alagamento",
             icon: <Icon name="add-location" size={24} color={"#FFF"} />,

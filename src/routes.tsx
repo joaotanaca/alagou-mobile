@@ -6,6 +6,7 @@ import Header from "./components/Header";
 
 import FloodingsMap from "./pages/FloodingsMap";
 import FloodingsDetails from "./pages/FloodingsDetails";
+import About from "./pages/About";
 import GetLocation from "./pages/LocationUser/GetLocation";
 import SearchLocation from "./pages/LocationUser/SearchLocation";
 import SelectMapPosition from "./pages/CreateFloodings/SelectMapPosition";
@@ -106,14 +107,14 @@ const Routes: React.FC = () => {
                         header: () => <Header showCancel={false} />,
                     }}
                 />
-                {/* <Screen
+                <Screen
                     name={strings.about}
                     component={About}
                     options={{
                         headerShown: true,
                         header: () => <Header showCancel={false} />,
                     }}
-                /> */}
+                />
                 <Screen
                     name={strings.userInformations}
                     component={Informations}
