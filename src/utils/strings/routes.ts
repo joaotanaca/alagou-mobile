@@ -7,7 +7,9 @@ const strings = {
     searchLocation: "SearchLocation",
     selectMapPosition: "SelectMapPosition",
     floodingsData: "FloodingsData",
-    configurations:"Configurations"
+    configurations: "Configurations",
+    about: "About",
+    userInformations: "UserInformations",
 };
 
 export default strings;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { View, Text, StyleSheet } from "react-native";
 import { Avatar, Button, TextInput } from "react-native-paper";
 import route_strings from "../../utils/strings/routes";
@@ -13,6 +13,7 @@ import strings from "../../utils/strings/routes";
 
 const User: React.FC = () => {
     const navigate = useNavigation();
+    const route = useRoute().params as { config: boolean };
     const [data, setData] = useState({
         email: "",
         password: "",
@@ -32,7 +33,11 @@ const User: React.FC = () => {
         api.post("/user/login", data)
             .then(({ data: response }) => {
                 dispatch(login(response));
-                navigate.navigate(strings.selectMapPosition);
+                navigate.navigate(
+                    route.config
+                        ? strings.configurations
+                        : strings.selectMapPosition,
+                );
             })
             .catch((err) => {
                 setError(err.response.data.message);

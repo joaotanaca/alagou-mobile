@@ -12,6 +12,7 @@ import SelectMapPosition from "./pages/CreateFloodings/SelectMapPosition";
 import FloodingsData from "./pages/CreateFloodings/FloodingsData";
 import Login from "./pages/User/Login";
 import Signup from "./pages/User/Signup";
+import Informations from "./pages/User/Informations";
 import route_strings from "./utils/strings/routes";
 import strings from "./utils/strings/routes";
 import Configurations from "./pages/Configurations";
@@ -103,6 +104,22 @@ const Routes: React.FC = () => {
                     options={{
                         headerShown: true,
                         header: () => <Header showCancel={false} />,
+                    }}
+                />
+                {/* <Screen
+                    name={strings.about}
+                    component={About}
+                    options={{
+                        headerShown: true,
+                        header: () => <Header showCancel={false} />,
+                    }}
+                /> */}
+                <Screen
+                    name={strings.userInformations}
+                    component={Informations}
+                    options={{
+                        headerShown: true,
+                        header: () => <Header title="Suas informações" />,
                     }}
                 />
             </Navigator>
