@@ -66,19 +66,13 @@ const FloodingsMap: React.FC = () => {
             color: "#0086c3",
         },
         {
-            text: user?.name ?? "Logue-se ou cadastre-se",
+            text: "Configurações",
             icon: (
                 <TextInput.Icon
-                    name={user?.name ? "account-circle" : "login"}
+                    name={"settings"}
                     size={24}
                     color={"#FFF"}
-                    onPress={() =>
-                        navigation.navigate(
-                            user?.name
-                                ? strings.selectMapPosition
-                                : strings.login,
-                        )
-                    }
+                    onPress={() => navigation.navigate(strings.configurations)}
                 />
             ),
             name: "button_user",
@@ -102,7 +96,6 @@ const FloodingsMap: React.FC = () => {
                 setLocation(coords);
             })();
         }
-
         return;
     }, []);
 
@@ -143,10 +136,6 @@ const FloodingsMap: React.FC = () => {
                         <Marker
                             key={index}
                             icon={mapMarker}
-                            calloutAnchor={{
-                                x: 1.9,
-                                y: 0.3,
-                            }}
                             coordinate={{
                                 latitude: Flooding.latitude,
                                 longitude: Flooding.longitude,
@@ -223,7 +212,6 @@ const styles = StyleSheet.create({
         paddingVertical: 8,
         backgroundColor: "rgba(255, 255, 255, 1)",
         borderRadius: 16,
-        borderBottomLeftRadius: 0,
         justifyContent: "center",
         alignSelf: "flex-start",
     },

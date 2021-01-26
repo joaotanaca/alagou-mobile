@@ -40,7 +40,6 @@ const User: React.FC = () => {
     };
     return (
         <>
-            <Header showCancel={false} goHome />
             <View style={styles.container}>
                 <Avatar.Icon icon="account" theme={theme} size={100} />
                 <Text style={styles.title}>

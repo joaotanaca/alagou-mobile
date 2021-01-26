@@ -3,6 +3,7 @@ import { Platform, NativeModules, StyleSheet, Text, View } from "react-native";
 import { BorderlessButton } from "react-native-gesture-handler";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { relative } from "path";
 
 interface HeaderProps {
     title?: string;

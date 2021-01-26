@@ -13,6 +13,8 @@ import FloodingsData from "./pages/CreateFloodings/FloodingsData";
 import Login from "./pages/User/Login";
 import Signup from "./pages/User/Signup";
 import route_strings from "./utils/strings/routes";
+import strings from "./utils/strings/routes";
+import Configurations from "./pages/Configurations";
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -34,7 +36,14 @@ const Routes: React.FC = () => {
                     component={FloodingsMap}
                     initialParams={{ coords: {} }}
                 />
-                <Screen name={route_strings.login} component={Login} />
+                <Screen
+                    name={route_strings.login}
+                    component={Login}
+                    options={{
+                        headerShown: true,
+                        header: () => <Header showCancel={false} goHome />,
+                    }}
+                />
                 <Screen
                     name={route_strings.signup}
                     component={Signup}
@@ -74,7 +83,9 @@ const Routes: React.FC = () => {
                     component={SelectMapPosition}
                     options={{
                         headerShown: true,
-                        header: () => <Header title="Selecione no mapa" />,
+                        header: () => (
+                            <Header title="Selecione no mapa" goHome />
+                        ),
                     }}
                 />
 
@@ -84,6 +95,14 @@ const Routes: React.FC = () => {
                     options={{
                         headerShown: true,
                         header: () => <Header title="Informe os dados" />,
+                    }}
+                />
+                <Screen
+                    name={strings.configurations}
+                    component={Configurations}
+                    options={{
+                        headerShown: true,
+                        header: () => <Header showCancel={false} />,
                     }}
                 />
             </Navigator>
