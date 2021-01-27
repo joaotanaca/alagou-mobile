@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { View, Text, StyleSheet } from "react-native";
 import { Avatar, Button, TextInput } from "react-native-paper";
-import route_strings from "../../utils/strings/routes";
-import Header from "../../components/Header";
 import api from "../../services/api";
 import { useDispatch } from "react-redux";
 import { login } from "../../store/actions/user";
@@ -34,13 +32,13 @@ const User: React.FC = () => {
             .then(({ data: response }) => {
                 dispatch(login(response));
                 navigate.navigate(
-                    route.config
+                    !!route?.config
                         ? strings.configurations
                         : strings.selectMapPosition,
                 );
             })
             .catch((err) => {
-                setError(err.response.data.message);
+                setError(err.response?.data?.message);
             });
     };
     return (
@@ -105,7 +103,11 @@ const User: React.FC = () => {
                         compact
                         uppercase={false}
                         labelStyle={redirectSignup.label}
-                        onPress={() => navigate.navigate(route_strings.signup)}
+                        onPress={() =>
+                            navigate.navigate(strings.signup, {
+                                config: !!route?.config,
+                            })
+                        }
                         theme={theme}
                     >
                         crie uma conta agora

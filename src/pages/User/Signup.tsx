@@ -1,15 +1,12 @@
 import React, { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { View, Text, StyleSheet, KeyboardAvoidingView } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import route_strings from "../../utils/strings/routes";
 import api from "../../services/api";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { login } from "../../store/actions/user";
 import strings from "../../utils/strings/routes";
-import { GlobalState } from "../../utils/interfaces/redux";
-
-// import { Container } from './styles';
 
 const User: React.FC = () => {
     const [name, setName] = useState("");
@@ -19,6 +16,7 @@ const User: React.FC = () => {
     const [confirmPassword, setConfirmPassword] = useState("");
     const dispatch = useDispatch();
     const navigate = useNavigation();
+    const route = useRoute().params as { config: boolean };
     const theme = {
         colors: {
             primary: "#0086c3",
@@ -38,7 +36,11 @@ const User: React.FC = () => {
         api.post("/user/create", data)
             .then(({ data }) => {
                 dispatch(login(data));
-                navigate.navigate(strings.selectMapPosition);
+                navigate.navigate(
+                    !!route?.config
+                        ? strings.configurations
+                        : strings.selectMapPosition,
+                );
             })
             .catch((err) => {
                 alert(JSON.stringify(err.response.data));
